@@ -4,13 +4,14 @@ globals [ reproductionNoiseSD maxPop shares donations possibleDonations donation
           sum-pop sum-num-weak-cheat sum-num-strong-cheat sum-av-rel-tol sum-don-rate
           av-pop av-num-weak-cheat av-num-strong-cheat av-av-rel-tol av-don-rate ]
 
-turtles-own [tag tolerance skill age store strong-cheater?]
+turtles-own [tag tolerance skill age store strong-cheater? last-patch]
 ;; tag - is the value of an agent's socially recognisable characteristic
 ;; tolerance - is the range above and below its own tag which defines which other agents it will donate to 
 ;; skill - is the kind of nutrition that this agent can harvest
 ;; age - the age of the agent in simulation ticks, this is not necessary for the simulation but allows the setting of a maximum age if desired
 ;; store - the amount of energy an agent can store, otherwise some agents accumulate HUGE stores of energy
 ;; strong-cheater? - whether the agent is of the special kind "strong cheater", any of its offspring will also be strong cheaters
+;; last-patch - the patch turtle is living in now
 
 patches-own [foodAvailable ]
 ;; The energy available on the patch
@@ -37,6 +38,7 @@ to setup
   do-attributes
   do-subpopulations
   do-profile
+  ;;do-dynamicRelocate
   reset-ticks
   reset-timer
 end
@@ -100,6 +102,8 @@ to go
         [ set xcor [pxcor] of patch-here + (2 * random 2) - 1  ]
         [ set ycor [pycor] of patch-here + (2 * random 2) - 1  ]
       turtle-display-settings
+;;      set shape "airplane"
+      move-turtles
     ]
   ]
   
@@ -124,6 +128,21 @@ to basic-agent-settings
     set store (n-values numFoodTypes [initialFood])
     set age 0
     set size 0.1
+end
+
+to move-turtles
+  if not dynamic-relocate [stop]
+  let grey-patches PATCHES WITH [ PCOLOR = GREY ]
+  ask turtles
+  [
+    let new-patch ONE-OF grey-patches
+    if new-patch != last-patch
+    [
+      jump new-patch
+      SET last-patch new-patch
+      set shape "airplane"
+    ]
+  ]
 end
 
 to turtle-display-settings
@@ -730,7 +749,7 @@ sdReproductionNoise
 sdReproductionNoise
 0
 0.1
-0.0030
+0.003
 0.0001
 1
 NIL
@@ -1044,6 +1063,17 @@ stats-after
 1
 0
 Number
+
+SWITCH
+92
+802
+303
+835
+dynamic-relocate
+dynamic-relocate
+0
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -1436,7 +1466,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 5.0.1
+NetLogo 5.0.5
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
@@ -1506,7 +1536,7 @@ NetLogo 5.0.1
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.0050"/>
+      <value value="0.005"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -1599,7 +1629,7 @@ NetLogo 5.0.1
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.0050"/>
+      <value value="0.005"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -1692,7 +1722,7 @@ NetLogo 5.0.1
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.0050"/>
+      <value value="0.005"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -1785,7 +1815,7 @@ NetLogo 5.0.1
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.0050"/>
+      <value value="0.005"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -1881,7 +1911,7 @@ NetLogo 5.0.1
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.0050"/>
+      <value value="0.005"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -1970,7 +2000,7 @@ NetLogo 5.0.1
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.0050"/>
+      <value value="0.005"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -2063,7 +2093,7 @@ NetLogo 5.0.1
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.0050"/>
+      <value value="0.005"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
