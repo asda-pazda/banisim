@@ -95,24 +95,35 @@ to go
     right turnInc
   ]
   
-  ;; migrate
+  ;; migrate - allow migration new agents
   ask turtles with [not strong-cheater?] [
+;;    if not dynamic-relocate [stop]
     if random-float 1 < prob-migrate [
       ifelse 0 = random 2
         [ set xcor [pxcor] of patch-here + (2 * random 2) - 1  ]
         [ set ycor [pycor] of patch-here + (2 * random 2) - 1  ]
       turtle-display-settings
 ;;      set shape "airplane"
-      move-turtles
+;;      move-turtles
     ]
   ]
   
   ask turtles with [strong-cheater?] [
+;;    if not dynamic-relocate [stop]
     if random-float 1 < prob-cheater-migrate [
       ifelse 0 = random 2
         [ set xcor [pxcor] of patch-here + (2 * random 2) - 1  ]
         [ set ycor [pycor] of patch-here + (2 * random 2) - 1  ]
       turtle-display-settings
+    ]
+  ]
+  
+  ask turtles with [not strong-cheater?] [
+    if not dynamic-relocate [stop]
+    if count turtles-here < count turtles-here with [strong-cheater?][
+        set xcor [pxcor] of patch-here + (2 * random 2) - 1  
+        set ycor [pycor] of patch-here + (2 * random 2) - 1
+        set shape "airplane"
     ]
   ]
   
@@ -131,13 +142,12 @@ to basic-agent-settings
 end
 
 to move-turtles
+  ;; get count of turtles on patch if non-cheats < cheats, make random non-cheat move to another patch
   if not dynamic-relocate [stop]
   let grey-patches PATCHES WITH [ PCOLOR = GREY ]
-  ask turtles
-  [
+  ask turtles [
     let new-patch ONE-OF grey-patches
-    if new-patch != last-patch
-    [
+    if new-patch != last-patch [
       jump new-patch
       SET last-patch new-patch
       set shape "airplane"
