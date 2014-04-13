@@ -95,9 +95,8 @@ to go
     right turnInc
   ]
   
-  ;; migrate - allow migration new agents
+  ;; migrate
   ask turtles with [not strong-cheater?] [
-;;    if not dynamic-relocate [stop]
     if random-float 1 < prob-migrate [
       ifelse 0 = random 2
         [ set xcor [pxcor] of patch-here + (2 * random 2) - 1  ]
@@ -118,13 +117,23 @@ to go
     ]
   ]
   
-  ask turtles with [not strong-cheater?] [
-    if not dynamic-relocate [stop]
-    if count turtles-here < count turtles-here with [strong-cheater?][
-        set xcor [pxcor] of patch-here + (2 * random 2) - 1  
-        set ycor [pycor] of patch-here + (2 * random 2) - 1
-        set shape "airplane"
-    ]
+  ask patches [
+  ask turtles-here with [not strong-cheater?] [;;not moving cheaters
+    let prawilni count turtles-here ;; iteracja forem sprawdzajaca kazdy patch po koleji
+    let czity count turtles-here with [tolerance = 0]
+    show prawilni
+    show czity
+    ;;if not dynamic-relocate [stop]
+    ;;if count prawilni <  czity [ ;; problem - here
+      ;;let grey-patches PATCHES WITH [ PCOLOR = GREY ]
+      ;;let new-patch ONE-OF grey-patches
+      ;;if new-patch != last-patch [
+        ;;  move-to new-patch
+        ;;  SET last-patch new-patch
+        ;;]
+        ;;set shape "airplane"
+    ;;]
+  ]
   ]
   
   ;; do displays
@@ -688,7 +697,7 @@ NIL
 HORIZONTAL
 
 PLOT
-209
+319
 674
 487
 833
@@ -887,10 +896,10 @@ PENS
 "soft" 1.0 0 -7500403 true "" "plot count turtles with [tolerance = 0]"
 
 INPUTBOX
-5
-698
-99
-758
+60
+770
+110
+830
 watched-pxcor
 4
 1
@@ -898,10 +907,10 @@ watched-pxcor
 Number
 
 INPUTBOX
-103
-697
-194
-757
+116
+771
+166
+831
 watched-pycor
 5
 1
@@ -954,10 +963,10 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-4
-676
-224
-710
+423
+643
+643
+677
 Watched Patch (darker patch) ->
 13
 0.0
@@ -998,10 +1007,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1125
-375
-1244
-420
+1136
+65
+1239
+110
 Prop Strong Cheat
 safeDiv \n  count turtles with [strong-cheater?] \n  count turtles
 2
@@ -1009,10 +1018,10 @@ safeDiv \n  count turtles with [strong-cheater?] \n  count turtles
 11
 
 MONITOR
-1125
-422
-1244
-467
+1136
+113
+1239
+158
 Prop Soft Cheat
 safeDiv \n  count turtles with [tolerance = 0] \n  count turtles
 2
@@ -1025,16 +1034,16 @@ INPUTBOX
 1109
 392
 numb-cheat
-5
+20
 1
 0
 Number
 
 SWITCH
-92
-763
-203
-796
+4
+733
+115
+766
 profile-on?
 profile-on?
 0
@@ -1042,10 +1051,10 @@ profile-on?
 -1000
 
 MONITOR
-819
-348
-877
-393
+1180
+210
+1238
+255
 Pop
 count turtles
 0
@@ -1053,10 +1062,10 @@ count turtles
 11
 
 MONITOR
-883
-349
-957
-394
+1165
+160
+1239
+205
 Secs/Tick
 report-time
 2
@@ -1064,10 +1073,10 @@ report-time
 11
 
 INPUTBOX
-10
-771
-84
-831
+4
+770
+59
+830
 stats-after
 1000
 1
@@ -1075,13 +1084,13 @@ stats-after
 Number
 
 SWITCH
-92
-802
-303
-835
+7
+639
+118
+672
 dynamic-relocate
 dynamic-relocate
-0
+1
 1
 -1000
 
@@ -2148,5 +2157,5 @@ Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
 
 @#$#@#$#@
-0
+1
 @#$#@#$#@
