@@ -119,7 +119,7 @@ to go
   
   ask patches [
   ask turtles-here with [not strong-cheater?] [;;not moving cheaters
-    let prawilni count turtles-here ;; iteracja forem sprawdzajaca kazdy patch po koleji
+    let prawilni count turtles-here with [tolerance != 0] ;; iteracja forem sprawdzajaca kazdy patch po koleji
     let czity count turtles-here with [tolerance = 0]
     show prawilni
     show czity
@@ -697,10 +697,10 @@ NIL
 HORIZONTAL
 
 PLOT
-319
-674
-487
-833
+530
+675
+698
+834
 Tag Profile
 Tag value
 Age
@@ -775,7 +775,7 @@ NIL
 HORIZONTAL
 
 PLOT
-492
+704
 675
 999
 837
@@ -812,10 +812,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-1002
-395
-1110
-428
+815
+350
+923
+383
 Intro Cheat
 introduce-cheaters
 NIL
@@ -829,10 +829,10 @@ NIL
 1
 
 BUTTON
-1002
-431
-1111
-465
+925
+350
+1020
+384
 Turn to Cheat
 change-to-cheater
 NIL
@@ -876,10 +876,10 @@ NIL
 HORIZONTAL
 
 PLOT
-819
-469
-1242
-669
+100
+675
+523
+835
 Population
 time
 Number
@@ -896,10 +896,10 @@ PENS
 "soft" 1.0 0 -7500403 true "" "plot count turtles with [tolerance = 0]"
 
 INPUTBOX
-60
-770
-110
-830
+875
+555
+925
+615
 watched-pxcor
 4
 1
@@ -907,10 +907,10 @@ watched-pxcor
 Number
 
 INPUTBOX
-116
-771
-166
-831
+931
+556
+981
+616
 watched-pycor
 5
 1
@@ -1029,10 +1029,10 @@ safeDiv \n  count turtles with [tolerance = 0] \n  count turtles
 11
 
 INPUTBOX
-1036
-332
-1109
-392
+1025
+320
+1098
+380
 numb-cheat
 20
 1
@@ -1040,10 +1040,10 @@ numb-cheat
 Number
 
 SWITCH
-4
-733
-115
-766
+820
+515
+990
+548
 profile-on?
 profile-on?
 0
@@ -1073,10 +1073,10 @@ report-time
 11
 
 INPUTBOX
-4
-770
-59
-830
+819
+555
+874
+615
 stats-after
 1000
 1
@@ -1084,10 +1084,10 @@ stats-after
 Number
 
 SWITCH
-7
-639
-118
-672
+820
+475
+990
+508
 dynamic-relocate
 dynamic-relocate
 1
