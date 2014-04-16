@@ -121,18 +121,18 @@ to go
   ask turtles-here with [not strong-cheater?] [;;not moving cheaters
     let prawilni count turtles-here with [tolerance != 0] ;; iteracja forem sprawdzajaca kazdy patch po koleji
     let czity count turtles-here with [tolerance = 0]
-    show prawilni
-    show czity
-    ;;if not dynamic-relocate [stop]
-    ;;if count prawilni <  czity [ ;; problem - here
-      ;;let grey-patches PATCHES WITH [ PCOLOR = GREY ]
-      ;;let new-patch ONE-OF grey-patches
-      ;;if new-patch != last-patch [
-        ;;  move-to new-patch
-        ;;  SET last-patch new-patch
-        ;;]
-        ;;set shape "airplane"
-    ;;]
+    ;;show prawilni
+    ;;show czity
+    if not dynamic-relocate [stop] ;; procent czitera - random że się przenosi
+    if czity / ( czity + prawilni ) > 0.1 [ ;; problem - here
+      let grey-patches PATCHES WITH [ PCOLOR = GREY ]
+      let new-patch ONE-OF grey-patches
+      if new-patch != last-patch [
+          move-to new-patch
+          SET last-patch new-patch
+        ]
+        set shape "airplane"
+    ]
   ]
   ]
   
@@ -1090,7 +1090,7 @@ SWITCH
 508
 dynamic-relocate
 dynamic-relocate
-1
+0
 1
 -1000
 
