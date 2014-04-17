@@ -38,7 +38,6 @@ to setup
   do-attributes
   do-subpopulations
   do-profile
-  ;;do-dynamicRelocate
   reset-ticks
   reset-timer
 end
@@ -118,23 +117,23 @@ to go
   ]
   
   ask patches [
-  ask turtles-here with [not strong-cheater?] [;;not moving cheaters
-    let prawilni count turtles-here with [tolerance != 0] ;; iteracja forem sprawdzajaca kazdy patch po koleji
-    let czity count turtles-here with [tolerance = 0]
-    ;;show prawilni
-    ;;show czity
-    if not dynamic-relocate [stop] ;; procent czitera - random że się przenosi
-    if czity / ( czity + prawilni ) > 0.1 [ ;; problem - here
-      let grey-patches PATCHES WITH [ PCOLOR = GREY ]
-      let new-patch ONE-OF grey-patches
-      if new-patch != last-patch [
+    ask turtles-here with [not strong-cheater?] [;;not moving cheaters
+      let prawilni count turtles-here with [tolerance != 0] ;; iteracja forem sprawdzajaca kazdy patch po koleji
+      let czity count turtles-here with [tolerance = 0]
+      if not dynamic-relocate [stop] ;; procent czitera - random że się przenosi
+      if czity / ( czity + prawilni ) > 0.1 [ ;; dodanie statystyki - nie odpytywanie bezpośrednio turtla o jego prywatne sprawy
+        let grey-patches PATCHES WITH [ PCOLOR = GREY ]
+        let new-patch ONE-OF grey-patches
+        if new-patch != last-patch [
           move-to new-patch
           SET last-patch new-patch
         ]
         set shape "airplane"
+      ]
     ]
   ]
-  ]
+  ; 0.009 - nie jest traktowany jako cheat - myslę że turtle które mają tolerancję < 0.1 są słabymi cheatami
+  
   
   ;; do displays
   do-attributes
@@ -150,19 +149,19 @@ to basic-agent-settings
     set size 0.1
 end
 
-to move-turtles
-  ;; get count of turtles on patch if non-cheats < cheats, make random non-cheat move to another patch
-  if not dynamic-relocate [stop]
-  let grey-patches PATCHES WITH [ PCOLOR = GREY ]
-  ask turtles [
-    let new-patch ONE-OF grey-patches
-    if new-patch != last-patch [
-      jump new-patch
-      SET last-patch new-patch
-      set shape "airplane"
-    ]
-  ]
-end
+;to move-turtles
+;  ;; get count of turtles on patch if non-cheats < cheats, make random non-cheat move to another patch
+;  if not dynamic-relocate [stop]
+;  let grey-patches PATCHES WITH [ PCOLOR = GREY ]
+;  ask turtles [
+;    let new-patch ONE-OF grey-patches
+;    if new-patch != last-patch [
+;      jump new-patch
+;      SET last-patch new-patch
+;      set shape "airplane"
+;    ]
+;  ]
+;end
 
 to turtle-display-settings
     st
@@ -1090,7 +1089,18 @@ SWITCH
 508
 dynamic-relocate
 dynamic-relocate
-0
+1
+1
+-1000
+
+SWITCH
+1005
+475
+1187
+508
+cheater-evolution
+cheater-evolution
+1
 1
 -1000
 
