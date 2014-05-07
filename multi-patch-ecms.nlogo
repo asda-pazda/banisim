@@ -29,7 +29,7 @@ to setup
   set maxDonationRate 1 / numPairings
   set spread-max 0.4
   if map-chooser = "standard" [
-    ask patches [set pcolor grey]
+    ask patches [set pcolor white]
   ]
   if map-chooser = "ultra-marine" [
   ;TODO RS: insert map generator / swapper here
@@ -134,7 +134,7 @@ to go
       let czity count turtles-here with [tolerance = 0]
       if not dynamic-relocate [stop] ;; procent czitera - random że się przenosi
       if czity / ( czity + prawilni ) > 0.1 [ ;; dodanie statystyki - nie odpytywanie bezpośrednio turtla o jego prywatne sprawy
-        let grey-patches PATCHES WITH [ PCOLOR = GREY ]
+        let grey-patches PATCHES WITH [ PCOLOR = WHITE ]
         let new-patch ONE-OF grey-patches
         if new-patch != last-patch [
           move-to new-patch
@@ -1187,7 +1187,7 @@ CHOOSER
 map-chooser
 map-chooser
 "standard" "ultra-marine"
-0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
