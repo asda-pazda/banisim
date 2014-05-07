@@ -13,7 +13,7 @@ turtles-own [tag tolerance skill age store strong-cheater? last-patch]
 ;; strong-cheater? - whether the agent is of the special kind "strong cheater", any of its offspring will also be strong cheaters
 ;; last-patch - the patch turtle is living in now
 
-patches-own [foodAvailable ]
+patches-own [foodAvailable]
 ;; The energy available on the patch
 
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -21,14 +21,26 @@ patches-own [foodAvailable ]
 ;;;;;;;;;;;;;;;;;;;;;;;
 to setup 
   clear-all
-  set color-set [red blue lime cyan magenta gray orange violet  yellow]
+  set color-set [red blue lime cyan magenta gray orange violet yellow]
   set maxPop numFood / foodUsageRate
   ifelse maxAge > 0 
     [set turnInc 360 / maxAge]
     [set turnInc 1]
   set maxDonationRate 1 / numPairings
   set spread-max 0.4
-  ask patches [set pcolor grey]
+  
+  ;TODO RS: insert map generator / swapper here
+  ask patches [set pcolor white]
+  ask patches [if pxcor > 3 and pxcor < 6 [set pcolor blue]]
+  ask patches [if pxcor = 0 [set pcolor blue]]  
+  ask patches [if pxcor = 9 [set pcolor blue]]  
+  ask patches [if pycor = 0 [set pcolor blue]] 
+  ask patches [if pycor = 8 [set pcolor blue]] 
+  ask patches [if pxcor = 2 and pycor < 7 [set pcolor blue]]
+  ask patches [if pxcor = 7 and pycor < 7 [set pcolor blue]]
+  ask patches [if pxcor > 3 and pxcor < 6 and pycor = 0 [set pcolor white]]
+  ;TODO RS END
+  
   set watched-patch patch watched-pxcor watched-pycor
   ask watched-patch [set pcolor grey - 1]
   set established? false
@@ -97,9 +109,7 @@ to go
   ;; migrate
   ask turtles with [not strong-cheater?] [
     if random-float 1 < prob-migrate [
-      ifelse 0 = random 2
-        [ set xcor [pxcor] of patch-here + (2 * random 2) - 1  ]
-        [ set ycor [pycor] of patch-here + (2 * random 2) - 1  ]
+      migrate
       turtle-display-settings
 ;;      set shape "airplane"
 ;;      move-turtles
@@ -109,9 +119,7 @@ to go
   ask turtles with [strong-cheater?] [
 ;;    if not dynamic-relocate [stop]
     if random-float 1 < prob-cheater-migrate [
-      ifelse 0 = random 2
-        [ set xcor [pxcor] of patch-here + (2 * random 2) - 1  ]
-        [ set ycor [pycor] of patch-here + (2 * random 2) - 1  ]
+      migrate
       turtle-display-settings
     ]
   ]
@@ -142,6 +150,54 @@ to go
   do-stats
   tick
 end
+
+to migrate
+  let x [pxcor] of patch-here
+  let y [pYcor] of patch-here
+
+  let availablePositions []
+
+  ask patch x y [set availablePositions [pcolor] of neighbors]
+  
+  let my-turtle-list (neighbors)
+
+  let goodPatches 0
+  foreach availablePositions 
+  [ 
+    if ? = white [set goodPatches goodPatches + 1]
+  ]
+  let newPatch random goodPatches
+   
+  let counter 0
+  ask my-turtle-list
+  [ 
+    if counter = newPatch
+    [
+      set x pxcor
+      set y pycor 
+    ]
+    set counter counter + 1
+  ]
+   
+   set xcor x
+   set ycor y
+   
+   ;RS TODO FIX: if patch with wrong color is chosen, retry 
+   let wrongSwap 0
+   ask patch x y 
+   [ 
+     if pcolor != white 
+     [
+        ;show "WTF"
+        set wrongSwap 1 
+     ]
+     
+   ]
+   if wrongSwap = 1 [ migrate ] 
+   ;TODO RS END
+   
+end
+
 
 to basic-agent-settings
     set store (n-values numFoodTypes [initialFood])
@@ -174,15 +230,17 @@ end
 
 ;; generate a random agent at a patch
 to generate-agent
-  sprout 1 [
-    basic-agent-settings
-    set skill (random numFoodTypes)
-    set tolerance (random-float 1) * maxTolerance
-    set tag random-float 1
-    ifelse random-float 1 < prob-cheater 
+  if pcolor = white [
+    sprout 1 [
+      basic-agent-settings
+      set skill (random numFoodTypes)
+      set tolerance (random-float 1) * maxTolerance
+      set tag random-float 1
+      ifelse random-float 1 < prob-cheater 
       [set strong-cheater? true set tolerance 0] 
       [set strong-cheater? false]
-    turtle-display-settings
+      turtle-display-settings
+    ]
   ]
 end
 
@@ -437,7 +495,7 @@ GRAPHICS-WINDOW
 6
 10
 611
-636
+576
 -1
 -1
 59.5
@@ -453,7 +511,7 @@ GRAPHICS-WINDOW
 0
 9
 0
-9
+8
 1
 1
 1
@@ -767,7 +825,7 @@ sdReproductionNoise
 sdReproductionNoise
 0
 0.1
-0.003
+0.0030
 0.0001
 1
 NIL
@@ -900,7 +958,7 @@ INPUTBOX
 925
 615
 watched-pxcor
-4
+9
 1
 0
 Number
@@ -911,7 +969,7 @@ INPUTBOX
 981
 616
 watched-pycor
-5
+4
 1
 0
 Number
@@ -1565,7 +1623,7 @@ NetLogo 5.0.5
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.005"/>
+      <value value="0.0050"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -1658,7 +1716,7 @@ NetLogo 5.0.5
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.005"/>
+      <value value="0.0050"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -1751,7 +1809,7 @@ NetLogo 5.0.5
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.005"/>
+      <value value="0.0050"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -1844,7 +1902,7 @@ NetLogo 5.0.5
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.005"/>
+      <value value="0.0050"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -1940,7 +1998,7 @@ NetLogo 5.0.5
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.005"/>
+      <value value="0.0050"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -2029,7 +2087,7 @@ NetLogo 5.0.5
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.005"/>
+      <value value="0.0050"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -2122,7 +2180,7 @@ NetLogo 5.0.5
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.005"/>
+      <value value="0.0050"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
