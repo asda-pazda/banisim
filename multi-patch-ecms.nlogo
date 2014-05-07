@@ -13,7 +13,7 @@ turtles-own [tag tolerance skill age store strong-cheater? last-patch random-evo
 ;; strong-cheater? - whether the agent is of the special kind "strong cheater", any of its offspring will also be strong cheaters
 ;; last-patch - the patch turtle is living in now
 
-patches-own [foodAvailable]
+patches-own [foodAvailable sum-patch-pop sum-patch-num-weak-cheat sum-patch-num-strong-cheat]
 ;; The energy available on the patch
 
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -28,6 +28,7 @@ to setup
     [set turnInc 1]
   set maxDonationRate 1 / numPairings
   set spread-max 0.4
+  
   if map-chooser = "standard" [
     ask patches [set pcolor white]
   ]
@@ -160,12 +161,28 @@ to go
       ]
     ]  
   ]
+  
   ;; do displays
   do-attributes
   do-subpopulations
   do-profile
   do-stats
+  do-patch-stats
   tick
+end
+
+to do-patch-stats
+  ask patches [
+    set sum-patch-pop count turtles-here
+    ;show "populacja"
+    ;show sum-patch-pop
+    set sum-patch-num-weak-cheat count turtles-here with [tolerance = 0]
+    ;show "weak czity"
+    ;show sum-patch-num-weak-cheat
+    set sum-patch-num-strong-cheat count turtles-here with [strong-cheater?]
+    ;show "stronk czity"
+    ;show sum-patch-num-strong-cheat
+  ]  
 end
 
 to migrate
@@ -1187,7 +1204,7 @@ CHOOSER
 map-chooser
 map-chooser
 "standard" "ultra-marine"
-1
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
