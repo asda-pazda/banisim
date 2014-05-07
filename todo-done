@@ -1,7 +1,7 @@
 DONE:
 -initial map support
 -agents now travel only to neighbor patches (8), if patch is accessible
-
+-initial cheater evolution support
 
 TODO:
 -adaptacyjni cheaterzy dostosowujacy swoje oszukiwanie do populacji (chce przezyc) / możliwość zmiany cheaterów w trakcie ich życia na mniejszych cheaterów mając na uwadze populacje patcha/wymieralność/ilość zasobów w patchu
