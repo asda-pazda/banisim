@@ -4,7 +4,7 @@ globals [ reproductionNoiseSD maxPop shares donations possibleDonations donation
           sum-pop sum-num-weak-cheat sum-num-strong-cheat sum-av-rel-tol sum-don-rate
           av-pop av-num-weak-cheat av-num-strong-cheat av-av-rel-tol av-don-rate ]
 
-turtles-own [tag tolerance skill age store strong-cheater? last-patch]
+turtles-own [tag tolerance skill age store strong-cheater? last-patch random-evolution]
 ;; tag - is the value of an agent's socially recognisable characteristic
 ;; tolerance - is the range above and below its own tag which defines which other agents it will donate to 
 ;; skill - is the kind of nutrition that this agent can harvest
@@ -28,7 +28,10 @@ to setup
     [set turnInc 1]
   set maxDonationRate 1 / numPairings
   set spread-max 0.4
-  
+  if map-chooser = "standard" [
+    ask patches [set pcolor grey]
+  ]
+  if map-chooser = "ultra-marine" [
   ;TODO RS: insert map generator / swapper here
   ask patches [set pcolor white]
   ask patches [if pxcor > 3 and pxcor < 6 [set pcolor blue]]
@@ -40,6 +43,7 @@ to setup
   ask patches [if pxcor = 7 and pycor < 7 [set pcolor blue]]
   ask patches [if pxcor > 3 and pxcor < 6 and pycor = 0 [set pcolor white]]
   ;TODO RS END
+  ]
   
   set watched-patch patch watched-pxcor watched-pycor
   ask watched-patch [set pcolor grey - 1]
@@ -142,7 +146,20 @@ to go
   ]
   ; 0.009 - nie jest traktowany jako cheat - myslę że turtle które mają tolerancję < 0.1 są słabymi cheatami
   
-  
+  ask patches [
+    ask turtles-here with [strong-cheater?] [
+      if not cheater-evolution [stop]
+      let prawilni count turtles-here with [tolerance != 0] ;; iteracja forem sprawdzajaca kazdy patch po koleji
+      let czity count turtles-here with [tolerance = 0]
+      if czity / ( czity + prawilni ) > 0.1 [
+        set random-evolution random-float 1
+        if random-evolution > 0.6 [
+          set tolerance random-float 1
+          set shape "face happy"
+        ]
+      ]
+    ]  
+  ]
   ;; do displays
   do-attributes
   do-subpopulations
@@ -825,7 +842,7 @@ sdReproductionNoise
 sdReproductionNoise
 0
 0.1
-0.0030
+0.003
 0.0001
 1
 NIL
@@ -1158,9 +1175,19 @@ SWITCH
 508
 cheater-evolution
 cheater-evolution
-1
+0
 1
 -1000
+
+CHOOSER
+1010
+520
+1148
+565
+map-chooser
+map-chooser
+"standard" "ultra-marine"
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -1623,7 +1650,7 @@ NetLogo 5.0.5
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.0050"/>
+      <value value="0.005"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -1716,7 +1743,7 @@ NetLogo 5.0.5
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.0050"/>
+      <value value="0.005"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -1809,7 +1836,7 @@ NetLogo 5.0.5
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.0050"/>
+      <value value="0.005"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -1902,7 +1929,7 @@ NetLogo 5.0.5
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.0050"/>
+      <value value="0.005"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -1998,7 +2025,7 @@ NetLogo 5.0.5
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.0050"/>
+      <value value="0.005"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -2087,7 +2114,7 @@ NetLogo 5.0.5
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.0050"/>
+      <value value="0.005"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
@@ -2180,7 +2207,7 @@ NetLogo 5.0.5
       <value value="0.1"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="sdReproductionNoise">
-      <value value="0.0050"/>
+      <value value="0.005"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="profile-on?">
       <value value="true"/>
