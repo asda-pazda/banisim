@@ -1,3 +1,7 @@
-możliwość relokacji agentów w trakcie ich życia do losowego patcha a nie jedynie sasiadujacego bezposrednio
-możliwość zmiany cheaterów w trakcie ich życia na mniejszych cheaterów mając na uwadze populacje patcha/wymieralność/ilość zasobów w patchu
-dodanie mozliwosci wyboru map, ograniczenia ilosci patchy, np tylko mozliwosc zycia na okregu lub w kole
+#done - możliwość relokacji agentów w trakcie ich życia do losowego patcha a nie jedynie sasiadujacego bezposrednio
+#done możliwość zmiany cheaterów w trakcie ich życia na mniejszych cheaterów mając na uwadze populacje patcha/wymieralność/ilość zasobów w patchu
+#done dodanie mozliwosci wyboru map, ograniczenia ilosci patchy, np tylko mozliwosc zycia na okregu lub w kole
+
+dodanie wiekszej ilosci map
+statystyki dla patchy - aby nie odpytywac bezposrednio turtla o tolerancje
+dodac zmiane chitow na taka bioraca pod uwage wymieralnosc/ilosc zasobow
