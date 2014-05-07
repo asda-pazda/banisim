@@ -151,10 +151,10 @@ to go
       if not cheater-evolution [stop]
       let prawilni count turtles-here with [tolerance != 0] ;; iteracja forem sprawdzajaca kazdy patch po koleji
       let czity count turtles-here with [tolerance = 0]
-      if czity / ( czity + prawilni ) > 0.1 [
+      if czity / ( czity + prawilni ) > 0.6 [
         set random-evolution random-float 1
         if random-evolution > 0.6 [
-          set tolerance random-float 1
+          set tolerance 0.01 + random-float 0.99
           set shape "face happy"
         ]
       ]
