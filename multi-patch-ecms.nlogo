@@ -13,7 +13,7 @@ turtles-own [tag tolerance skill age store strong-cheater? last-patch random-evo
 ;; strong-cheater? - whether the agent is of the special kind "strong cheater", any of its offspring will also be strong cheaters
 ;; last-patch - the patch turtle is living in now
 
-patches-own [foodAvailable sum-patch-pop sum-patch-num-weak-cheat sum-patch-num-strong-cheat]
+patches-own [foodAvailable sum-patch-pop sum-patch-num-weak-cheat sum-patch-num-strong-cheat deaths mortality av-patch-pop]
 ;; The energy available on the patch
 
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -52,6 +52,7 @@ to setup
   set report-time 0
   set smoothing 0.2
   set sum-pop 0 set sum-num-weak-cheat  0 set sum-num-strong-cheat  0 set sum-av-rel-tol  0 set sum-don-rate 0
+  ;set sum-patch-pop 0 set sum-patch-num-weak-cheat 0 set sum-patch-num-strong-cheat 0 set deaths 0 set mortality 0
   do-attributes
   do-subpopulations
   do-profile
@@ -130,13 +131,16 @@ to go
   ]
   
   ask patches [
+    ;show sum-patch-num-weak-cheat
     ask turtles-here with [not strong-cheater?] [;;not moving cheaters
-      let prawilni count turtles-here with [tolerance != 0] ;; iteracja forem sprawdzajaca kazdy patch po koleji
-      let czity count turtles-here with [tolerance = 0]
+      ;let prawilni count turtles-here with [tolerance != 0] ;; iteracja forem sprawdzajaca kazdy patch po koleji
+      ;let czity count turtles-here with [tolerance = 0]
       if not dynamic-relocate [stop] ;; procent czitera - random że się przenosi
-      if czity / ( czity + prawilni ) > 0.1 [ ;; dodanie statystyki - nie odpytywanie bezpośrednio turtla o jego prywatne sprawy
-        let grey-patches PATCHES WITH [ PCOLOR = WHITE ]
-        let new-patch ONE-OF grey-patches
+      ;if czity / ( czity + prawilni ) > 0.1 [ ;; dodanie statystyki - nie odpytywanie bezpośrednio turtla o jego prywatne sprawy
+      if sum-patch-pop = 0 [stop]
+      if  sum-patch-num-weak-cheat / sum-patch-pop > 0.1[
+        let white-patches PATCHES WITH [ PCOLOR = WHITE ]
+        let new-patch ONE-OF white-patches
         if new-patch != last-patch [
           move-to new-patch
           SET last-patch new-patch
@@ -150,9 +154,11 @@ to go
   ask patches [
     ask turtles-here with [strong-cheater?] [
       if not cheater-evolution [stop]
-      let prawilni count turtles-here with [tolerance != 0] ;; iteracja forem sprawdzajaca kazdy patch po koleji
-      let czity count turtles-here with [tolerance = 0]
-      if czity / ( czity + prawilni ) > 0.6 [
+      ;let prawilni count turtles-here with [tolerance != 0] ;; iteracja forem sprawdzajaca kazdy patch po koleji
+      ;let czity count turtles-here with [tolerance = 0]
+      ;if czity / ( czity + prawilni ) > 0.6 [
+      if sum-patch-pop = 0 [stop]
+      if sum-patch-num-weak-cheat / sum-patch-pop > 0.6 [
         set random-evolution random-float 1
         if random-evolution > 0.6 [
           set tolerance 0.01 + random-float 0.99
@@ -173,15 +179,15 @@ end
 
 to do-patch-stats
   ask patches [
+    if ticks <= stats-after [stop]
+    let stat-time ticks - stats-after
+    set deaths sum-patch-pop - count turtles-here
     set sum-patch-pop count turtles-here
-    ;show "populacja"
-    ;show sum-patch-pop
     set sum-patch-num-weak-cheat count turtles-here with [tolerance = 0]
-    ;show "weak czity"
-    ;show sum-patch-num-weak-cheat
-    set sum-patch-num-strong-cheat count turtles-here with [strong-cheater?]
-    ;show "stronk czity"
-    ;show sum-patch-num-strong-cheat
+    set sum-patch-num-strong-cheat count turtles-here with [strong-cheater?] 
+    set av-patch-pop sum-patch-pop / stat-time
+    if av-patch-pop = 0 [stop]
+    set mortality deaths / av-patch-pop
   ]  
 end
 
@@ -1192,7 +1198,7 @@ SWITCH
 508
 cheater-evolution
 cheater-evolution
-0
+1
 1
 -1000
 
