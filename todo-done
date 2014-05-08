@@ -11,3 +11,16 @@ TODO:
 FUTURE:
 -pair migration
 -automated simulations
+
+
+2014-05-07 notes
+1. Automatisation
+- minimum 30x for each case with strong cheater
+*look at figure 9. in the paper
+
+2. Cases: migration topology / self decision about migration by agents
+
+other:
+-changing of tolerance during life span
+-being strong cheater should always remain permanent
+-agents not being strong cheaters, seeing population evaporating, can increase their tolerance
