@@ -152,7 +152,7 @@ to go
   ; 0.009 - nie jest traktowany jako cheat - myslę że turtle które mają tolerancję < 0.1 są słabymi cheatami
   
   ask patches [
-    ask turtles-here with [strong-cheater?] [
+    ask turtles-here with [tolerance = 0] [
       if not cheater-evolution [stop]
       ;let prawilni count turtles-here with [tolerance != 0] ;; iteracja forem sprawdzajaca kazdy patch po koleji
       ;let czity count turtles-here with [tolerance = 0]
@@ -179,15 +179,16 @@ end
 
 to do-patch-stats
   ask patches [
-    if ticks <= stats-after [stop]
+    ;if ticks <= stats-after [stop]
+    ;show "spam"
     let stat-time ticks - stats-after
     set deaths sum-patch-pop - count turtles-here
     set sum-patch-pop count turtles-here
     set sum-patch-num-weak-cheat count turtles-here with [tolerance = 0]
     set sum-patch-num-strong-cheat count turtles-here with [strong-cheater?] 
-    set av-patch-pop sum-patch-pop / stat-time
+    ;set av-patch-pop sum-patch-pop / stat-time ; problem here
     if av-patch-pop = 0 [stop]
-    set mortality deaths / av-patch-pop
+    ;set mortality deaths / av-patch-pop
   ]  
 end
 
@@ -1198,7 +1199,7 @@ SWITCH
 508
 cheater-evolution
 cheater-evolution
-1
+0
 1
 -1000
 
