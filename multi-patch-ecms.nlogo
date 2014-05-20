@@ -61,6 +61,7 @@ to setup
   ask patches [if pycor = 3 [set pcolor blue]]
   ask patches [if pycor = 4 [set pcolor blue]]
   ask patches [if pycor = 5 [set pcolor blue]]
+  ask patches [if pycor = 6 [set pcolor blue]]
   ]
   
   set watched-patch patch watched-pxcor watched-pycor
@@ -547,7 +548,7 @@ GRAPHICS-WINDOW
 6
 10
 611
-576
+636
 -1
 -1
 59.5
@@ -563,7 +564,7 @@ GRAPHICS-WINDOW
 0
 9
 0
-8
+9
 1
 1
 1
@@ -690,7 +691,7 @@ foodUsageRate
 foodUsageRate
 0
 1
-0.1
+0.17
 0.01
 1
 NIL
@@ -799,7 +800,7 @@ donationBenefit
 donationBenefit
 0
 1
-0.83
+0.9
 0.01
 1
 NIL
@@ -847,7 +848,7 @@ probValMutation
 probValMutation
 0
 0.5
-0
+0.1
 0.025
 1
 NIL
@@ -862,7 +863,7 @@ maxTime
 maxTime
 0
 100000
-10200
+5000
 100
 1
 NIL
@@ -877,7 +878,7 @@ sdReproductionNoise
 sdReproductionNoise
 0
 0.1
-0.003
+0.005
 0.0001
 1
 NIL
@@ -1010,7 +1011,7 @@ INPUTBOX
 925
 615
 watched-pxcor
-9
+4
 1
 0
 Number
@@ -1021,7 +1022,7 @@ INPUTBOX
 981
 616
 watched-pycor
-4
+5
 1
 0
 Number
@@ -1050,7 +1051,7 @@ stopNewThreshold
 stopNewThreshold
 0
 500
-500
+50
 10
 1
 NIL
@@ -1143,7 +1144,7 @@ INPUTBOX
 1098
 380
 numb-cheat
-20
+5
 1
 0
 Number
@@ -1199,7 +1200,7 @@ SWITCH
 508
 dynamic-relocate
 dynamic-relocate
-1
+0
 1
 -1000
 
