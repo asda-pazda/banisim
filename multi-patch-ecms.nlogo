@@ -45,6 +45,23 @@ to setup
   ask patches [if pxcor > 3 and pxcor < 6 and pycor = 0 [set pcolor white]]
   ;TODO RS END
   ]
+  if map-chooser = "ban-line" [
+  ask patches [set pcolor white]
+  ask patches [if pxcor = 3 [set pcolor blue]]
+  ask patches [if pxcor = 4 [set pcolor blue]]
+  ask patches [if pxcor = 5 [set pcolor blue]]
+  ask patches [if pxcor = 6 [set pcolor blue]]
+  ]
+  if map-chooser = "ban-line2" [
+  ask patches [set pcolor white]
+  ask patches [if pxcor = 3 [set pcolor blue]]
+  ask patches [if pxcor = 4 [set pcolor blue]]
+  ask patches [if pxcor = 5 [set pcolor blue]]
+  ask patches [if pxcor = 6 [set pcolor blue]]
+  ask patches [if pycor = 3 [set pcolor blue]]
+  ask patches [if pycor = 4 [set pcolor blue]]
+  ask patches [if pycor = 5 [set pcolor blue]]
+  ]
   
   set watched-patch patch watched-pxcor watched-pycor
   ask watched-patch [set pcolor grey - 1]
@@ -129,14 +146,11 @@ to go
       turtle-display-settings
     ]
   ]
-  
+
+  ;dynamic relocate
   ask patches [
-    ;show sum-patch-num-weak-cheat
     ask turtles-here with [not strong-cheater?] [;;not moving cheaters
-      ;let prawilni count turtles-here with [tolerance != 0] ;; iteracja forem sprawdzajaca kazdy patch po koleji
-      ;let czity count turtles-here with [tolerance = 0]
       if not dynamic-relocate [stop] ;; procent czitera - random że się przenosi
-      ;if czity / ( czity + prawilni ) > 0.1 [ ;; dodanie statystyki - nie odpytywanie bezpośrednio turtla o jego prywatne sprawy
       if sum-patch-pop = 0 [stop]
       if  sum-patch-num-weak-cheat / sum-patch-pop > 0.1[
         let white-patches PATCHES WITH [ PCOLOR = WHITE ]
@@ -149,14 +163,11 @@ to go
       ]
     ]
   ]
-  ; 0.009 - nie jest traktowany jako cheat - myslę że turtle które mają tolerancję < 0.1 są słabymi cheatami
-  
+
+  ;cheater evolution
   ask patches [
     ask turtles-here with [tolerance = 0] [
       if not cheater-evolution [stop]
-      ;let prawilni count turtles-here with [tolerance != 0] ;; iteracja forem sprawdzajaca kazdy patch po koleji
-      ;let czity count turtles-here with [tolerance = 0]
-      ;if czity / ( czity + prawilni ) > 0.6 [
       if sum-patch-pop = 0 [stop]
       if sum-patch-num-weak-cheat / sum-patch-pop > 0.6 [
         set random-evolution random-float 1
@@ -1199,7 +1210,7 @@ SWITCH
 508
 cheater-evolution
 cheater-evolution
-0
+1
 1
 -1000
 
@@ -1210,8 +1221,8 @@ CHOOSER
 565
 map-chooser
 map-chooser
-"standard" "ultra-marine"
-0
+"standard" "ultra-marine" "ban-line" "ban-line2"
+3
 
 @#$#@#$#@
 ## WHAT IS IT?
