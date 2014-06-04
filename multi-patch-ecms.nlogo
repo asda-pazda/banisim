@@ -13,7 +13,7 @@ turtles-own [tag tolerance skill age store strong-cheater? last-patch random-evo
 ;; strong-cheater? - whether the agent is of the special kind "strong cheater", any of its offspring will also be strong cheaters
 ;; last-patch - the patch turtle is living in now
 
-patches-own [foodAvailable sum-patch-pop sum-patch-num-weak-cheat sum-patch-num-strong-cheat deaths mortality av-patch-pop]
+patches-own [foodAvailable sum-patch-pop sum-patch-num-weak-cheat sum-patch-num-strong-cheat deaths mortality av-patch-pop fly-patch]
 ;; The energy available on the patch
 
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -179,6 +179,29 @@ to go
       ]
     ]  
   ]
+  
+  ;flying-patches
+  ask patches [
+    let i 0
+    if flying-patches = 0 [stop]
+    loop [
+      set i i + 1
+      let white-patches PATCHES WITH [ PCOLOR = WHITE ]
+      SET fly-patch ONE-OF white-patches
+      if flying-patches = i [stop]
+    ]  
+  ]
+  
+  ask patches[
+    if fly-patch != 0 [
+      ask turtles-here[
+        let chance random-float 1
+        if chance > 0.5 [
+          move-to fly-patch
+        ]
+      ]
+    ]
+  ]  
   
   ;; do displays
   do-attributes
@@ -1224,6 +1247,21 @@ map-chooser
 map-chooser
 "standard" "ultra-marine" "ban-line" "ban-line2"
 3
+
+SLIDER
+1005
+430
+1177
+463
+flying-patches
+flying-patches
+0
+20
+20
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
